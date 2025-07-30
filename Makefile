@@ -32,6 +32,7 @@ SRC_UTILS = \
 SRC_RANDER = \
 	./rander/start_randering.c \
 	./rander/file_create_window.c \
+	./rander/implement_raycastin.c \
 
 
 OBJ = $(SRC_RANDER:.c=.o) $(SRC_PARCING:.c=.o) $(SRC_MAIN:.c=.o) $(SRC_ERROR:.c=.o) $(SRC_GET_LINE:.c=.o) $(SRC_UTILS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:10:35 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/07/26 12:08:44 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:14:03 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 # define CUB_H
 
 # define SIZE 32
+# define ESC 53
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
+# define KEY_RIGHT 124
+# define KEY_LEFT 123
+# define NUM_GAME_MOVES 8
+
+# define ANGLE 2
 
 # include <mlx.h>
 # include <unistd.h>
@@ -22,6 +32,11 @@
 # include <stddef.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <math.h>
+
+
+
+
 
 
 typedef struct s_config {
@@ -36,6 +51,8 @@ typedef struct s_config {
 
 typedef struct s_map {
 	char **grid;
+	float dir_x;
+	float dir_y;
 	int width;
 	int height;
 } t_map;
@@ -50,9 +67,9 @@ typedef struct s_game {
 	int player_pixl_y;
 	char player_dir;
 
-	void *player;
-	void *empty;
-	void *wall;
+	// void *player;
+	// void *empty;
+	// void *wall;
 
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -111,6 +128,8 @@ void	ft_image(t_game *game, int width, int height);
 int		create_xpm_file_image(t_game *game);
 void	Calculate_width_height(t_game *game);
 int		moving(int key, t_game *game);
+void    setup_player(t_game *game);
+void    put_pixel(t_game *game, int x, int y, int color);
 
 /****************************************
 *			error						*

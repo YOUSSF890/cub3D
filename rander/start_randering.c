@@ -12,21 +12,14 @@ int create_window(t_game *game)
 	if (create_xpm_file_image(game))
 		return (1);
 	create_put_image_to_window(game);
-	mlx_key_hook(game->win_ptr, moving, game);
+	mlx_hook(game->win_ptr, 2, 1L<<0, moving, game);
 	return (0);
 }
-
-// int implement_raycastin(t_game *game)
-// {
-// 	;
-// }
 
 int	start_randering(t_game *game)
 {
 	if (create_window(game))
 		return (1);
-	// if (implement_raycastin(game))
-	// 	return (1);
 	mlx_loop(game->mlx_ptr);
 	return (0);
 }

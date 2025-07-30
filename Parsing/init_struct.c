@@ -6,7 +6,7 @@
 /*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:42:19 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/07/24 09:48:09 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/07/30 15:35:32 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void init_config(t_config *config)
 void init_map(t_map *map)
 {
     map->grid = NULL;
+    map->dir_x = 0;
+    map->dir_y = 0;
     map->width = -1;
     map->height = -1;
 }
