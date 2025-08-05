@@ -6,7 +6,7 @@
 /*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:10:35 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/08/05 10:52:35 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:58:13 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ typedef struct s_map {
 	char **grid;
 	float angle;
 	char palyer;
-	int Yh_vertical;
-	int Xh_vertical;
-	int Yh_horizontal;
-	int Xh_horizontal;
-	int d_X;
-	int d_Y;
+	float Yh_vertical;
+	float Xh_vertical;
+	float Yh_horizontal;
+	float Xh_horizontal;
+	float d_X;
+	float d_Y;
 	int width;
 	int height;
 } t_map;
@@ -69,13 +69,10 @@ typedef struct s_game {
 	int start_parcing_map;
 	int player_x;
 	int player_y;
-	int player_pixl_x;
-	int player_pixl_y;
+	float player_pixl_x;
+	float player_pixl_y;
 	char player_dir;
 
-	// void *player;
-	// void *empty;
-	// void *wall;
 
 	void	*mlx_ptr;
 	void	*win_ptr;

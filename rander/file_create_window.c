@@ -59,23 +59,22 @@ void store_dir(t_game *game, int width, int height)
 	if (game->map->grid[height][width] == 'N')
 	{
 		game->map->palyer = 'N';
-		// game->map->angle = 0; // 0 degrees
-		game->map->angle = 4.7123889804; // 270 degrees
+		game->map->angle = (3 * M_PI) / 2; // 270
 	}
 	else if (game->map->grid[height][width] == 'S')
 	{
 		game->map->palyer = 'S';
-		game->map->angle = 3.1415926536; // 180 degrees
+		game->map->angle = M_PI / 2; // 90
 	}
 	else if (game->map->grid[height][width] == 'E')
 	{
 		game->map->palyer = 'E';
-		game->map->angle = 1.5707963268; // 90 degrees
+		game->map->angle = 2 * M_PI; // 360 
 	}
 	else if (game->map->grid[height][width] == 'W')
 	{
 		game->map->palyer = 'W';
-		game->map->angle = 4.7123889804; // 270 degrees
+		game->map->angle = M_PI; // 180 
 	}
 }
 
@@ -83,8 +82,6 @@ void create_put_image_to_window(t_game *game)
 {
 	int width;
 	int height;
-	// int y;
-	// int x;
 
 	height = 0;
 	width = 0;
@@ -104,9 +101,6 @@ void create_put_image_to_window(t_game *game)
 
 int create_xpm_file_image(t_game *game)
 {
-	// int x;
-	// int y;
-
 	game->img_ptr = mlx_new_image(game->mlx_ptr, game->map->width, game->map->height);
 	if (!game->img_ptr)
 		return (1);
