@@ -6,13 +6,18 @@ void Calculate_width_height(t_game *game)
 	int height;
 
 	height = 0;
-	width = 0;
 	game->player_pixl_x = game->player_x * SIZE + (SIZE / 2);
 	game->player_pixl_y = game->player_y * SIZE + (SIZE / 2);
 	while (game->map->grid[height])
 	{
+		width = 0;
 		while (game->map->grid[height][width])
+		{
+			if (game->map->grid[height][width] == 'N' || game->map->grid[height][width] == 'S'
+				|| game->map->grid[height][width] == 'E' || game->map->grid[height][width] == 'W')
+				store_dir(game, width, height);
 			width++;
+		}
 		height++;
 	}
 	game->map->width = width * SIZE;
@@ -53,23 +58,24 @@ void store_dir(t_game *game, int width, int height)
 {
 	if (game->map->grid[height][width] == 'N')
 	{
-		game->map->dir_x = 0;
-		game->map->dir_y = -1;
+		game->map->palyer = 'N';
+		// game->map->angle = 0; // 0 degrees
+		game->map->angle = 4.7123889804; // 270 degrees
 	}
 	else if (game->map->grid[height][width] == 'S')
 	{
-		game->map->dir_x = 0;
-		game->map->dir_y = 1;
+		game->map->palyer = 'S';
+		game->map->angle = 3.1415926536; // 180 degrees
 	}
 	else if (game->map->grid[height][width] == 'E')
 	{
-		game->map->dir_x = 1;
-		game->map->dir_y = 0;
+		game->map->palyer = 'E';
+		game->map->angle = 1.5707963268; // 90 degrees
 	}
 	else if (game->map->grid[height][width] == 'W')
 	{
-		game->map->dir_x = -1;
-		game->map->dir_y = 0;
+		game->map->palyer = 'W';
+		game->map->angle = 4.7123889804; // 270 degrees
 	}
 }
 
@@ -77,8 +83,8 @@ void create_put_image_to_window(t_game *game)
 {
 	int width;
 	int height;
-	int y;
-	int x;
+	// int y;
+	// int x;
 
 	height = 0;
 	width = 0;
@@ -88,20 +94,18 @@ void create_put_image_to_window(t_game *game)
 		while (game->map->grid[height][width])
 		{
             ft_image(game, width, height);
-			if (game->map->grid[height][width] == 'N' || game->map->grid[height][width] == 'S'
-				|| game->map->grid[height][width] == 'E' || game->map->grid[height][width] == 'W')
-				store_dir(game, width, height);
 			width++; 
 		}
 		height++;
 	}
 	setup_player(game);
+	setup_ray(game);
 }
 
 int create_xpm_file_image(t_game *game)
 {
-	int x;
-	int y;
+	// int x;
+	// int y;
 
 	game->img_ptr = mlx_new_image(game->mlx_ptr, game->map->width, game->map->height);
 	if (!game->img_ptr)

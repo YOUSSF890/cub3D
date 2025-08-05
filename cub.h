@@ -6,7 +6,7 @@
 /*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:10:35 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/07/30 17:14:03 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/08/05 10:52:35 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define KEY_LEFT 123
 # define NUM_GAME_MOVES 8
 
-# define ANGLE 2
+// # define ANGLE 0.5
 
 # include <mlx.h>
 # include <unistd.h>
@@ -51,8 +51,14 @@ typedef struct s_config {
 
 typedef struct s_map {
 	char **grid;
-	float dir_x;
-	float dir_y;
+	float angle;
+	char palyer;
+	int Yh_vertical;
+	int Xh_vertical;
+	int Yh_horizontal;
+	int Xh_horizontal;
+	int d_X;
+	int d_Y;
 	int width;
 	int height;
 } t_map;
@@ -130,6 +136,8 @@ void	Calculate_width_height(t_game *game);
 int		moving(int key, t_game *game);
 void    setup_player(t_game *game);
 void    put_pixel(t_game *game, int x, int y, int color);
+void	store_dir(t_game *game, int width, int height);
+void	setup_ray(t_game *game);
 
 /****************************************
 *			error						*

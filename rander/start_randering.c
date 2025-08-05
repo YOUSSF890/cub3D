@@ -3,6 +3,7 @@
 int create_window(t_game *game)
 {
 	Calculate_width_height(game);
+	printf("======{%f}\n",game->map->angle);
 	game->mlx_ptr = mlx_init();
     if (!game->mlx_ptr)
         return (1);
