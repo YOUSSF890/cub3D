@@ -29,13 +29,9 @@ void    setup_player(t_game *game)
 void player_rotation(t_game *game, int key)
 {
 	if (key == KEY_LEFT)
-	{
 		game->map->angle = game->map->angle - 0.05;
-	}
 	else if (key == KEY_RIGHT)
-	{
 		game->map->angle = game->map->angle + 0.05;
-	}
 }
 
 
@@ -63,8 +59,6 @@ void Move_player(t_game *game, float y, float x, int key)
 	{
 		game->player_pixl_y = y;
 		game->player_pixl_x = x;
-		printf("+++++++++++++++++-----y =  %d\n", y);
-		printf("+++++++++++++++++x =  %d\n", x);
 	}
 }
 
@@ -99,7 +93,7 @@ int	moving(int key, t_game *game)
 		Move_player(game, new_y, new_x, key);
 	}
 	else if (key == KEY_LEFT || key == KEY_RIGHT)
-		player_rotation(game, key)  ;
+		player_rotation(game, key);
 	create_put_image_to_window(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img_ptr, 0, 0);
 	return (0);
