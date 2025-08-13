@@ -24,7 +24,7 @@ void Calculate_width_height(t_game *game)
 	game->map->height = height * SIZE;
 }
 
-void    put_pixel(t_game *game, int x, int y, int color)
+void  put_pixel(t_game *game, int x, int y, int color)
 {
     char    *dst;
 
@@ -97,11 +97,13 @@ void create_put_image_to_window(t_game *game)
 	}
 	setup_player(game);
 	setup_ray(game);
+	image_3D(game);
 }
 
 int create_xpm_file_image(t_game *game)
 {
 	game->img_ptr = mlx_new_image(game->mlx_ptr, game->map->width, game->map->height);
+	// game->img_ptr = mlx_new_image(game->mlx_ptr, WIDTH_IM, HEIGHT_IM);
 	if (!game->img_ptr)
 		return (1);
 	game->addr = mlx_get_data_addr(game->img_ptr, &game->bits_per_pixel, &game->line_length, &game->endian);

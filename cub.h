@@ -6,15 +6,27 @@
 /*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:10:35 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/08/05 15:58:13 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/08/13 10:14:31 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef CUB_H
 # define CUB_H
 
+# include <mlx.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stddef.h>
+# include <limits.h>
+# include <fcntl.h>
+# include <math.h>
+
 # define SIZE 32
+# define FOV 60 * M_PI / 180 // = 60
 # define ESC 53
+# define WIDTH_IM 1280
+# define HEIGHT_IM 768
 # define KEY_W 13
 # define KEY_A 0
 # define KEY_S 1
@@ -25,14 +37,6 @@
 
 // # define ANGLE 0.5
 
-# include <mlx.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <stddef.h>
-# include <limits.h>
-# include <fcntl.h>
-# include <math.h>
 
 
 
@@ -51,6 +55,7 @@ typedef struct s_config {
 
 typedef struct s_map {
 	char **grid;
+	int		dis[WIDTH_IM];  // 1.0471975512 / 0.001 = 1048
 	float angle;
 	char palyer;
 	float Yh_vertical;
@@ -59,6 +64,7 @@ typedef struct s_map {
 	float Xh_horizontal;
 	float d_X;
 	float d_Y;
+	int width_angel;
 	int width;
 	int height;
 } t_map;
@@ -135,6 +141,7 @@ void    setup_player(t_game *game);
 void    put_pixel(t_game *game, int x, int y, int color);
 void	store_dir(t_game *game, int width, int height);
 void	setup_ray(t_game *game);
+void image_3D(t_game *game);
 
 /****************************************
 *			error						*

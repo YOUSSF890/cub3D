@@ -8,6 +8,7 @@ int create_window(t_game *game)
     if (!game->mlx_ptr)
         return (1);
 	game->win_ptr = mlx_new_window(game->mlx_ptr, game->map->width, game->map->height, "cub3D");
+	// game->win_ptr = mlx_new_window(game->mlx_ptr, WIDTH_IM, HEIGHT_IM, "cub3D");
     if (!game->win_ptr)
         return (1);
 	if (create_xpm_file_image(game))
