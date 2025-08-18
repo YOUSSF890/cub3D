@@ -6,7 +6,7 @@
 /*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:10:35 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/08/13 10:14:31 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:25:43 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,41 +54,42 @@ typedef struct s_config {
 } t_config;
 
 typedef struct s_map {
-	char **grid;
-	int		dis[WIDTH_IM];  // 1.0471975512 / 0.001 = 1048
-	float angle;
-	char palyer;
-	float Yh_vertical;
-	float Xh_vertical;
-	float Yh_horizontal;
-	float Xh_horizontal;
-	float d_X;
-	float d_Y;
-	int width_angel;
-	int width;
-	int height;
+	char	**grid;
+	float	dis[WIDTH_IM];
+	float	angle;
+	char	palyer;
+	float	Yh_vertical;
+	float	Xh_vertical;
+	float	Yh_horizontal;
+	float	Xh_horizontal;
+	float	d_X;
+	float	d_Y;
+	int		width_angel;
+	int		width;
+	int		height;
 } t_map;
 
 typedef struct s_game {
-	t_config *config;
-	t_map *map;
-	int start_parcing_map;
-	int player_x;
-	int player_y;
-	float player_pixl_x;
-	float player_pixl_y;
-	char player_dir;
+	t_config	*config;
+	t_map		*map;
+	int			start_parcing_map;
+	int			player_x;
+	int			player_y;
+	float		player_pixl_x;
+	float		player_pixl_y;
+	char		player_dir;
 
-
-	void	*mlx_ptr;
-	void	*win_ptr;
-	void	*img_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img_ptr;
 	
-	void	*img_p;
-	char    *addr;
-	int     bits_per_pixel;
-    int     line_length;
-    int     endian;
+	
+	void		*img_p;
+	char  		*addr;
+	char  		*addr1;
+	int			bits_per_pixel;
+    int			line_length;
+    int			endian;
 
 } t_game;
 

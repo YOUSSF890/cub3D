@@ -5,6 +5,8 @@ void Calculate_width_height(t_game *game)
 	int width;
 	int height;
 
+	int x = 0;
+
 	height = 0;
 	game->player_pixl_x = game->player_x * SIZE + (SIZE / 2);
 	game->player_pixl_y = game->player_y * SIZE + (SIZE / 2);
@@ -18,9 +20,11 @@ void Calculate_width_height(t_game *game)
 				store_dir(game, width, height);
 			width++;
 		}
+		if(x < width)
+			x = width;
 		height++;
 	}
-	game->map->width = width * SIZE;
+	game->map->width = x * SIZE;
 	game->map->height = height * SIZE;
 }
 
@@ -100,10 +104,10 @@ void create_put_image_to_window(t_game *game)
 	image_3D(game);
 }
 
+
 int create_xpm_file_image(t_game *game)
 {
 	game->img_ptr = mlx_new_image(game->mlx_ptr, game->map->width, game->map->height);
-	// game->img_ptr = mlx_new_image(game->mlx_ptr, WIDTH_IM, HEIGHT_IM);
 	if (!game->img_ptr)
 		return (1);
 	game->addr = mlx_get_data_addr(game->img_ptr, &game->bits_per_pixel, &game->line_length, &game->endian);
