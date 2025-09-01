@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub.h                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 17:10:35 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/08/14 11:25:43 by ylagzoul         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 # ifndef CUB_H
 # define CUB_H
@@ -21,27 +11,32 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <math.h>
+# include <string.h>
 
 # define SIZE 32
-# define FOV 60 * M_PI / 180 // = 60
+# define FOV 60 * M_PI / 180
 # define ESC 53
-# define WIDTH_IM 1280
-# define HEIGHT_IM 768
+# define SCALE 4
+
+# define WIDTH_3D 1050
+# define HEIGHT_3D 768
 # define KEY_W 13
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
+# define KEY_ZOOM 6
+# define KEY_Q 12
+# define KEY_T 14
+# define KEY_F 15
 # define KEY_RIGHT 124
 # define KEY_LEFT 123
-# define NUM_GAME_MOVES 8
-
-// # define ANGLE 0.5
-
-
-
-
-
-
+# define NUM_GAME_MOVES 10
+# define SPEED 4
+# define PLAYER_SIZE 2
+# define MOVE_PLAYER_SIZE 4
+# define PATH_WLKING "./texter/player/rm_bg_walk/"
+# define PATH_FEEDING "./texter/player/feeding/"
+# define PATH_SOTING "./texter/player/xpm_shot/"
 
 typedef struct s_config {
 	char *no_texture;
@@ -51,23 +46,62 @@ typedef struct s_config {
 	int *check_duplicate;
 	int floor_color[3];
 	int ceiling_color[3];
-} t_config;
+}		t_config;
+
+typedef struct s_tex
+{
+    void    *img;
+    char    *addr;
+    int     width;
+    int     height;
+    int     bpp;
+    int     line_len;
+    int     endian;
+}   t_tex;
+
 
 typedef struct s_map {
 	char	**grid;
-	float	dis[WIDTH_IM];
+	float	dis[WIDTH_3D];
+	int		key;
 	float	angle;
 	char	palyer;
-	float	Yh_vertical;
-	float	Xh_vertical;
-	float	Yh_horizontal;
-	float	Xh_horizontal;
-	float	d_X;
-	float	d_Y;
+	float	Y_vertical;
+	float	X_vertical;
+	float	Y_horizontal;
+	float	X_horizontal;
+	float	wall_direction[WIDTH_3D];
 	int		width_angel;
 	int		width;
 	int		height;
+
+	int iszoom;
+	int scale;
+	int player_size;
+	int minimap_size;
+	int prefix_palyer_x;
+	int prefix_palyer_y;
+
+	int RayFacingDown;
+	int RayFacingUp;
+	int RayFacingRight;
+	int RayFacingLeft;
 } t_map;
+
+typedef struct s_player
+{
+	void **images_walk;
+	void **images_shout;
+	void **images_Feeding;
+	int images_counter_walk;
+	int images_counter_shot;
+	int images_counter_Feeding;
+	int current_image;
+	int frame;
+	int is_state;
+} t_player;
+
+
 
 typedef struct s_game {
 	t_config	*config;
@@ -77,19 +111,38 @@ typedef struct s_game {
 	int			player_y;
 	float		player_pixl_x;
 	float		player_pixl_y;
-	char		player_dir;
+
+	float		cp_player_pixl_x;
+	float		cp_player_pixl_y;
 
 	void		*mlx_ptr;
 	void		*win_ptr;
 	void		*img_ptr;
 	
 	
-	void		*img_p;
+	char	ray_valeu[WIDTH_3D];
+	char	ray_valeu_v;
+	char	ray_valeu_h;
+
+	t_tex		img_north;
+	t_tex		img_south;
+	t_tex		img_east;
+	t_tex		img_west;
+	t_tex		img_door;
+	int is_open_door;
+	float distance_plane;
+	float wall_height;
+	int wall_top;
+	int wall_bottom;
+	float corrected_distance;
+	
 	char  		*addr;
-	char  		*addr1;
 	int			bits_per_pixel;
     int			line_length;
     int			endian;
+
+	// 
+	t_player *img_player;
 
 } t_game;
 
@@ -114,12 +167,17 @@ typedef struct s_gnl
 # define ERROR_RENDER		"error in render game"
 # define ERROR_IMG			"error in images game"
 
+#define ERROR_WINDOW		"error in mlx_new_window"
+#define ERROR_INIT			"error in mlx_init"
+#define ERROR_IMAGE			"error in mlx_new_image"
+#define ERROR_IMAGE_XPM	"error in mlx_xpm_file_to_image"
+
 /****************************************
 * 		Parsing function				*
 *****************************************/
 
 int		start_parcing(int argc, char *argv[], t_game *game);
-int		filling_game(int argc, char *argv[], t_game *game);
+int		filling_game(char *argv[], t_game *game);
 int		init_struct(t_game *game);
 int check_cloros(t_game *game, char *str);
 int parce_and_filling_line(char **texter, char *str, int *index, char *prifex);
@@ -142,7 +200,24 @@ void    setup_player(t_game *game);
 void    put_pixel(t_game *game, int x, int y, int color);
 void	store_dir(t_game *game, int width, int height);
 void	setup_ray(t_game *game);
-void image_3D(t_game *game);
+void image_3d(t_game *game);
+int create_image(t_game *game);
+void setup1_ray(t_game *game);
+float ray_casting(t_game *game, float ray_angle, int ray_count);
+
+int Move_player(t_game *game, float y, float x, int i);
+void directoin_player(t_game *game);
+float distance_palyer_wall(t_game *game, float dis_v, float dis_h, int ray_count);
+
+/*
+	bonus
+*/
+
+int mouse_move_player(int x, int y, void *struct_game);
+int loading_image(t_game *game);
+int loop_inimation(t_game *game);
+void update_state(t_game *game);
+void render_images(t_game *game);
 
 /****************************************
 *			error						*
@@ -171,5 +246,16 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char *ft_substr(char *str, int start, int end);
 char	*ft_strchr(const char *s, int c);
 char	*ft_other_strdup(char *s);
+char	*ft_itoa(int n);
+
+
+/****************************************
+*	ceiling_color = (game->config->ceiling_color[0] << 16) | 
+					(game->config->ceiling_color[1] << 8) | 
+					game->config->ceiling_color[2];
+	floor_color = (game->config->floor_color[0] << 16) | 
+				  (game->config->floor_color[1] << 8) | 
+				  game->config->floor_color[2];				*
+*****************************************/
 
 #endif

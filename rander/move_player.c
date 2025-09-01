@@ -1,17 +1,22 @@
 #include "../cub.h"
 
-
-void player_rotation(t_game *game, int key)
+int player_rotation(t_game *game)
 {
-	if (key == KEY_LEFT)
-		game->map->angle = game->map->angle - 0.05;
-	else if (key == KEY_RIGHT)
-		game->map->angle = game->map->angle + 0.05;
+	if (game->map->key == KEY_LEFT)
+		game->map->angle = game->map->angle - 0.1;
+	else if (game->map->key == KEY_RIGHT)
+		game->map->angle = game->map->angle + 0.1;
+	if(game->map->angle >= 2 * M_PI)
+		game->map->angle -= 2 * M_PI;
+	if (game->map->angle < 0)
+		game->map->angle += 2 * M_PI;
+	return (0);
 }
 
-
-void Move_player(t_game *game, float y, float x, int key)
+int Move_player(t_game *game, float y, float x, int i)
 {
+	float move_player_size_x_y;
+
 	float a_y;
 	float b_x;
 	float c_y;
@@ -21,108 +26,159 @@ void Move_player(t_game *game, float y, float x, int key)
 	float m_y;
 	float n_x;
 
+	float a_yy;
 	float b_xx;
 	float c_yy;
+	float d_xx;
 	float t_yy;
+	float r_xx;
+	float m_yy;
 	float n_xx;
-	a_y = (y - 4) / SIZE;
-	b_x = (x - 4) / SIZE;
-	c_y = (y + 4) / SIZE;
-	d_x = (x - 4) / SIZE;
-	t_y = (y - 4) / SIZE;
-	r_x = (x + 4) / SIZE;
-	m_y = (y + 4) / SIZE;
-	n_x = (x + 4) / SIZE;
+	// if (game->map->RayFacingUp && game->map->RayFacingLeft)
+	// 	y = y - 1;
+	// if (game->map->RayFacingRight && game->map->RayFacingDown)
+	// 	x = x - 1;
+	// else if (game->map->RayFacingUp && game->map->RayFacingRight)
+	// {
+	// 	x = x - 1;
+	// 	y = y - 1;
+	// }
 
-	a_y = (y - 4) / SIZE;
-	b_xx = (x) / SIZE;
+	move_player_size_x_y = sqrtf(powf(MOVE_PLAYER_SIZE, 2) - (powf(MOVE_PLAYER_SIZE, 2) / 2));
 
-	c_yy = (y) / SIZE;
-	d_x = (x - 4) / SIZE;
+	a_y = (y - MOVE_PLAYER_SIZE) / SIZE;
+	b_x = (x) / SIZE;
+	c_y = (y + MOVE_PLAYER_SIZE) / SIZE;
+	d_x = (x) / SIZE;
+	t_y = (y) / SIZE;
+	r_x = (x + MOVE_PLAYER_SIZE) / SIZE;
 
-	t_yy = (y) / SIZE;
-	r_x = (x + 4) / SIZE;
+	m_y = (y) / SIZE;
+	n_x = (x - MOVE_PLAYER_SIZE) / SIZE;
+//
+	a_yy = (y - move_player_size_x_y) / SIZE;
+	b_xx =(x + move_player_size_x_y) / SIZE;
 
-	m_y = (y + 4) / SIZE;
-	n_xx = (x) / SIZE;
+	c_yy = (y + move_player_size_x_y) / SIZE;
+	d_xx =(x + move_player_size_x_y) / SIZE;
 
-		// &&game->map->grid[(int)a_y][(int)b_xx] != '1' && game->map->grid[(int)c_yy][(int)d_x] != '1'
-		// && game->map->grid[(int)t_yy][(int)r_x] != '1' && game->map->grid[(int)m_y][(int)n_xx] != '1')
+	t_yy = (y - move_player_size_x_y) / SIZE;
+	r_xx =(x - move_player_size_x_y) / SIZE;
 
-	printf("q==/ %c a===/ %c  s====/ %c r=====/ %c\n",game->map->grid[(int)a_y][(int)b_x],game->map->grid[(int)c_y][(int)d_x],game->map->grid[(int)t_y][(int)r_x],game->map->grid[(int)m_y][(int)n_x]);
-	printf("/ %f/ %f/ %f/ %f/ %f/ %f/ %f/ %f\n", a_y,b_x,c_y,d_x,t_y,r_x,m_y,n_x);
-	printf("y === %f  x == %f\n",y /32 ,x/32);
-	if (game->map->grid[(int)a_y][(int)b_x] != '1' && game->map->grid[(int)c_y][(int)d_x] != '1'
-		&& game->map->grid[(int)t_y][(int)r_x] != '1' && game->map->grid[(int)m_y][(int)n_x] != '1'
-		&&game->map->grid[(int)a_y][(int)b_xx] != '1' && game->map->grid[(int)c_yy][(int)d_x] != '1'
-		&& game->map->grid[(int)t_yy][(int)r_x] != '1' && game->map->grid[(int)m_y][(int)n_xx] != '1')
-	{
-		// printf("q== %c a=== %c  s==== %c r===== %c\n",game->map->grid[a_y][b_x],game->map->grid[c_y][d_x],game->map->grid[t_y][r_x],game->map->grid[m_y][n_x]);
-		game->player_pixl_y = y;
-		game->player_pixl_x = x;
-	}
-	// a_y = y/ SIZE;
-	// b_x = (x - 4) / SIZE;
-	// c_y = y/ SIZE;
-	// d_x = (x - 4) / SIZE;
-	// t_y = y/ SIZE;
-	// r_x = (x + 4) / SIZE;
-	// m_y = y/ SIZE;
-	// n_x = (x + 4) / SIZE;
+	m_yy = (y + move_player_size_x_y) / SIZE;
+	n_xx =(x - move_player_size_x_y) / SIZE;
 
-	else if (game->map->grid[(int)y/ SIZE][(int)(x - 4) / SIZE] != '1' && game->map->grid[(int)y/ SIZE][(int)(x - 4) / SIZE] != '1'
-		&& game->map->grid[(int)y/ SIZE][(int)(x + 4) / SIZE] != '1' && game->map->grid[(int)y/ SIZE][(int)(x + 4) / SIZE] != '1' && (key == KEY_W || key == KEY_S))
+	// if (game->map->grid[(int)y / SIZE][(int)x / SIZE] != '1' && (game->map->grid[(int)y / SIZE][(int)x / SIZE] != 'D' || game->is_open_door))
+	if (game->map->grid[(int)a_y][(int)b_x] != '1' && game->map->grid[(int)c_y][(int)d_x] != '1' && game->map->grid[(int)t_y][(int)r_x] != '1' && game->map->grid[(int)m_y][(int)n_x] != '1'
+		&& game->map->grid[(int)a_yy][(int)b_xx] != '1' && game->map->grid[(int)c_yy][(int)d_xx] != '1' && game->map->grid[(int)t_yy][(int)r_xx] != '1' && game->map->grid[(int)m_yy][(int)n_xx] != '1'
+		&& (game->map->grid[(int)y / SIZE][(int)x / SIZE] != 'D' || game->is_open_door))
 	{
 		game->player_pixl_x = x;
-	}
-	// a_y = (y - 4) / SIZE;
-	// b_x = x / SIZE;
-	// c_y = (y + 4) / SIZE;
-	// d_x = x / SIZE;
-	// t_y = (y - 4) / SIZE;
-	// r_x = x / SIZE;
-	// m_y = (y + 4) / SIZE;
-	// n_x = x / SIZE;
-	else if (game->map->grid[(int)(y - 4) / SIZE][(int) x / SIZE] != '1' && game->map->grid[(int)(y + 4) / SIZE][(int)x / SIZE] != '1'
-		&& game->map->grid[(int)(y - 4) / SIZE][(int)x / SIZE] != '1' && game->map->grid[(int)(y + 4) / SIZE][(int)x / SIZE] != '1' && (key == KEY_W || key == KEY_S))
-	{
 		game->player_pixl_y = y;
+		return(0);
 	}
+	return (1);
 }
 
-int	moving(int key, t_game *game)
+int move_game(t_game *game, int i)
 {
 	float new_x;
 	float new_y;
-	if (key == ESC)
-		exit(0);
-	else if (key == KEY_S)
+	int check;
+
+	if (game->map->key == KEY_S)
 	{
-		new_x = game->player_pixl_x + (cosf(game->map->angle) * -NUM_GAME_MOVES);
-		new_y = game->player_pixl_y + (sinf(game->map->angle) * -NUM_GAME_MOVES);
-		Move_player(game, new_y, new_x, key);
+		new_x = game->player_pixl_x - (cosf(game->map->angle) * i);
+		new_y = game->player_pixl_y - (sinf(game->map->angle) * i);
+		check = Move_player(game, new_y, new_x, i);
 	}
-	else if (key == KEY_W) //    W
+	else if (game->map->key == KEY_W)
 	{
-		new_x = game->player_pixl_x + (cosf(game->map->angle) * NUM_GAME_MOVES);
-		new_y = game->player_pixl_y + (sinf(game->map->angle) * NUM_GAME_MOVES);
-		Move_player(game, new_y, new_x, key);
+		new_x = game->player_pixl_x + (cosf(game->map->angle) * i);
+		new_y = game->player_pixl_y + (sinf(game->map->angle) * i);
+		check = Move_player(game, new_y, new_x , i);
 	}
-	else if (key == KEY_A)
+	else if (game->map->key == KEY_A)
 	{
-		new_x = game->player_pixl_x + (sinf(game->map->angle) * NUM_GAME_MOVES);
-		new_y = game->player_pixl_y + (cosf(game->map->angle) * -NUM_GAME_MOVES);
-		Move_player(game, new_y, new_x, key);
+		new_x = game->player_pixl_x - (sinf(game->map->angle) * i);
+		new_y = game->player_pixl_y + (cosf(game->map->angle) * i);
+		check = Move_player(game, new_y, new_x, i);
 	}
-	else if (key == KEY_D)
+	else if (game->map->key == KEY_D)
 	{
-		new_x = game->player_pixl_x + (sinf(game->map->angle) * -NUM_GAME_MOVES);
-		new_y = game->player_pixl_y + (cosf(game->map->angle) * NUM_GAME_MOVES);
-		Move_player(game, new_y, new_x, key);
+		new_x = game->player_pixl_x + (sinf(game->map->angle) * i);
+		new_y = game->player_pixl_y - (cosf(game->map->angle) * i);
+		check = Move_player(game, new_y, new_x, i);
 	}
-	else if (key == KEY_LEFT || key == KEY_RIGHT)
-		player_rotation(game, key);
-	create_put_image_to_window(game);
-	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img_ptr, 0, 0);
+	return (check);
+}
+
+
+int	moving(int key, t_game *game)
+{
+	game->map->key = key;
+	int i;
+	int check;
+	float new_x;
+	float new_y;
+
+
+	i = NUM_GAME_MOVES;
+	while(i > 0)
+	{
+		if (game->map->key == ESC)
+			exit(0);
+		else if (game->map->key == KEY_S || game->map->key == KEY_W || game->map->key == KEY_A || game->map->key == KEY_D)
+		{
+			check = move_game(game, i);
+		}
+		else if (game->map->key == KEY_T)
+		{
+			game->img_player->is_state = 1;
+			game->img_player->current_image = 0;
+			check = 0;
+		}
+		else if (game->map->key == KEY_Q)
+		{
+			if (!game->is_open_door)
+				game->is_open_door = 1;
+			else
+				game->is_open_door = 0;
+			check = 0;
+		}
+		else if (game->map->key == KEY_F)
+		{
+			game->img_player->is_state = 2;
+			game->img_player->current_image = 0;
+			check = 0;
+		}
+		else if (game->map->key == KEY_LEFT || game->map->key == KEY_RIGHT)
+			check = player_rotation(game);
+		else if (game->map->key == KEY_ZOOM)
+		{
+			if(game->map->iszoom == 0)
+			{
+				game->map->player_size = 8;
+				game->map->minimap_size = 250;
+				game->map->prefix_palyer_x = WIDTH_3D / 2;
+				game->map->prefix_palyer_y = HEIGHT_3D / 2;
+				game->map->scale = 1;
+				game->map->iszoom = 1;
+			}
+			else
+			{
+				game->map->player_size = PLAYER_SIZE;
+				game->map->minimap_size = 100;
+				game->map->prefix_palyer_x = 102;
+				game->map->prefix_palyer_y = 102;
+				game->map->scale = SCALE;
+				game->map->iszoom = 0;
+			}
+			check = 0;
+		}
+		if (check == 0)
+			break ;
+		i--;
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:42:19 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/07/31 10:48:27 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/09/01 11:11:51 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ void init_map(t_map *map)
     map->grid = NULL;
     map->width = -1;
     map->height = -1;
+    map->iszoom = 0;
+    map->player_size = PLAYER_SIZE;
+    map->minimap_size = 100;
+    map->prefix_palyer_x = 102;
+    map->prefix_palyer_y = 102;
+    map->scale = SCALE;
 }
 
 int init_struct(t_game *game)
@@ -54,8 +60,8 @@ int init_struct(t_game *game)
     game->player_x = -1;
     game->start_parcing_map = -1;
     game->player_y = -1;
-    game->player_dir = -1;
     init_map(game->map);
     init_config(game->config);
+    game->is_open_door = 0;
     return (1);
 }
