@@ -6,7 +6,7 @@ int player_rotation(t_game *game)
 		game->map->angle = game->map->angle - 0.1;
 	else if (game->map->key == KEY_RIGHT)
 		game->map->angle = game->map->angle + 0.1;
-	if(game->map->angle >= 2 * M_PI)
+	if (game->map->angle >= 2 * M_PI)
 		game->map->angle -= 2 * M_PI;
 	if (game->map->angle < 0)
 		game->map->angle += 2 * M_PI;
@@ -34,15 +34,6 @@ int Move_player(t_game *game, float y, float x, int i)
 	float r_xx;
 	float m_yy;
 	float n_xx;
-	// if (game->map->RayFacingUp && game->map->RayFacingLeft)
-	// 	y = y - 1;
-	// if (game->map->RayFacingRight && game->map->RayFacingDown)
-	// 	x = x - 1;
-	// else if (game->map->RayFacingUp && game->map->RayFacingRight)
-	// {
-	// 	x = x - 1;
-	// 	y = y - 1;
-	// }
 
 	move_player_size_x_y = sqrtf(powf(MOVE_PLAYER_SIZE, 2) - (powf(MOVE_PLAYER_SIZE, 2) / 2));
 
@@ -68,14 +59,15 @@ int Move_player(t_game *game, float y, float x, int i)
 	m_yy = (y + move_player_size_x_y) / SIZE;
 	n_xx =(x - move_player_size_x_y) / SIZE;
 
-	// if (game->map->grid[(int)y / SIZE][(int)x / SIZE] != '1' && (game->map->grid[(int)y / SIZE][(int)x / SIZE] != 'D' || game->is_open_door))
-	if (game->map->grid[(int)a_y][(int)b_x] != '1' && game->map->grid[(int)c_y][(int)d_x] != '1' && game->map->grid[(int)t_y][(int)r_x] != '1' && game->map->grid[(int)m_y][(int)n_x] != '1'
-		&& game->map->grid[(int)a_yy][(int)b_xx] != '1' && game->map->grid[(int)c_yy][(int)d_xx] != '1' && game->map->grid[(int)t_yy][(int)r_xx] != '1' && game->map->grid[(int)m_yy][(int)n_xx] != '1'
+	if (game->map->grid[(int)a_y][(int)b_x] != '1' && game->map->grid[(int)c_y][(int)d_x] != '1' 
+		&& game->map->grid[(int)t_y][(int)r_x] != '1' && game->map->grid[(int)m_y][(int)n_x] != '1'
+		&& game->map->grid[(int)a_yy][(int)b_xx] != '1' && game->map->grid[(int)c_yy][(int)d_xx] != '1'
+		&& game->map->grid[(int)t_yy][(int)r_xx] != '1' && game->map->grid[(int)m_yy][(int)n_xx] != '1'
 		&& (game->map->grid[(int)y / SIZE][(int)x / SIZE] != 'D' || game->is_open_door))
 	{
 		game->player_pixl_x = x;
 		game->player_pixl_y = y;
-		return(0);
+		return (0);
 	}
 	return (1);
 }
