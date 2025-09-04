@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_mini_atoi.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkhairi <hkhairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 18:17:42 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/09/02 22:33:02 by hkhairi          ###   ########.fr       */
+/*   Created: 2025/08/31 21:57:22 by hkhairi           #+#    #+#             */
+/*   Updated: 2025/09/02 22:32:35 by hkhairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
-int	ft_strlen(const char *s)
+int	ft_mini_atoi(char *str, int start, int end)
 {
-	int	i;
+	int	result;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	result = 0;
+	while (str[start] >= '0' && str[start] <= '9' && start < end)
+	{
+		if (result > 255)
+			return (ft_putendl_fd(ERROR_VALUE, 2), -1);
+		result = result * 10 + (str[start] - '0');
+		str++;
+	}
+	return (result);
 }

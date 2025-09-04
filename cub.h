@@ -32,8 +32,11 @@
 # define KEY_LEFT 123
 # define NUM_GAME_MOVES 10
 # define SPEED 4
-# define PLAYER_SIZE 2
-# define MOVE_PLAYER_SIZE 4
+# define PLAYER_SIZE 8
+# define MOVE_PLAYER_SIZE 11
+# define MINIMAP_SIZE 100
+# define PREFIX_PX 102
+# define PREFIX_PY 102
 # define PATH_WLKING "./texter/player/rm_bg_walk/"
 # define PATH_FEEDING "./texter/player/feeding/"
 # define PATH_SOTING "./texter/player/xpm_shot/"
@@ -202,7 +205,7 @@ int create_image(t_game *game);
 void setup1_ray(t_game *game);
 float ray_casting(t_game *game, float ray_angle, int ray_count);
 
-int Move_player(t_game *game, float y, float x, int i);
+int Move_player(t_game *game, float y, float x, int key);
 void directoin_player(t_game *game);
 float distance_palyer_wall(t_game *game, float dis_v, float dis_h, int ray_count);
 
@@ -215,6 +218,11 @@ int loading_image(t_game *game);
 int loop_inimation(t_game *game);
 void update_state(t_game *game);
 void render_images(t_game *game);
+int loading_image(t_game *game);
+void free_feed_images(t_game *game);
+void free_shot_images(t_game *game);
+void free_walk_images(t_game *game);
+char *path_image_image(char *PRE_FIX, int n);
 
 /****************************************
 *			error						*
@@ -244,7 +252,9 @@ char *ft_substr(char *str, int start, int end);
 char	*ft_strchr(const char *s, int c);
 char	*ft_other_strdup(char *s);
 char	*ft_itoa(int n);
-
+int	ft_isdigit(int c);
+int	ft_mini_atoi(char *str, int start, int end);
+void free_game(t_game *game);
 
 /****************************************
 *	ceiling_color = (game->config->ceiling_color[0] << 16) | 
