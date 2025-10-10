@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_randering.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkhairi <hkhairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:55:48 by ylagzoul          #+#    #+#             */
-/*   Updated: 2025/09/05 21:05:32 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/09/07 19:21:46 by hkhairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,8 @@ void	calculate_width_height(t_game *game)
 	game->map->height = height * SIZE;
 }
 
-void	create_put_image_to_window(t_game *game)
+void	setup_game(t_game *game)
 {
-	int x;
-	int y;
-	x = 0;
-	y = 0;
-	while(y > HEIGHT_3D)
-	{
-		while(x > WIDTH_3D)
-		{
-			put_pixel(game, game->map->prefix_palyer_x + x, game->map->prefix_palyer_y + y, 0x000000);
-			x++;
-		}
-		y++;
-	}
 	setup_ray(game);
 	setup_minimap(game);
 	setup_player(game);
@@ -93,17 +80,17 @@ int	create_image(t_game *game)
 		return (ft_putendl_fd(ERROR_IMAGE, 2), 1);
 	game->addr = mlx_get_data_addr(game->img_ptr, &game->bits_per_pixel, \
 		&game->line_length, &game->endian);
-	if (load_texture(game, &game->img_north, game->config->no_texture))
+	if (load_texture(game, game->img_north, game->config->no_texture))
 		return (1);
-	if (load_texture(game, &game->img_east, game->config->ea_texture))
+	if (load_texture(game, game->img_east, game->config->ea_texture))
 		return (1);
-	if (load_texture(game, &game->img_west, game->config->we_texture))
+	if (load_texture(game, game->img_west, game->config->we_texture))
 		return (1);
-	if (load_texture(game, &game->img_south, game->config->so_texture))
+	if (load_texture(game, game->img_south, game->config->so_texture))
 		return (1);
-	if (load_texture(game, &game->img_door, "texter/door/1.xpm"))
+	if (load_texture(game, game->img_door, "texter/door/1.xpm"))
 		return (1);
-	create_put_image_to_window(game);
+	setup_game(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img_ptr, 0, 0);
 	return (0);
 }
@@ -121,7 +108,7 @@ int	start_randering(t_game *game)
 		return (ft_putendl_fd(ERROR_WINDOW, 2), 1);
 	if (create_image(game))
 		return (1);
-	create_put_image_to_window(game);
+	mlx_hook(game->win_ptr, 17, 0, ft_close_win, game);
 	mlx_hook(game->win_ptr, 2, 0, moving, game);
 	mlx_hook(game->win_ptr, 6, 0L, mouse_move_player, game);
 	mlx_loop_hook(game->mlx_ptr, loop_inimation, game);

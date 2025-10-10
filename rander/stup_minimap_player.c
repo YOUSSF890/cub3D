@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_create_window.c                               :+:      :+:    :+:   */
+/*   stup_minimap_player.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkhairi <hkhairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:04:49 by ylagzoul          #+#    #+#             */
-/*   Updated: 2025/09/05 10:36:56 by ylagzoul         ###   ########.fr       */
+/*   Updated: 2025/09/07 19:14:47 by hkhairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,15 @@ int	load_texture(t_game *game, t_tex *tex, char *path)
 {
 	int	w;
 	int	h;
+	int	fd;
 
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putendl_fd("Error: Cannot open file", 2);
+		return (1);
+	}
+	close(fd);
 	tex->img = mlx_xpm_file_to_image(game->mlx_ptr, path, &w, &h);
 	if (!tex->img)
 		return (ft_putendl_fd(ERROR_IMAGE_XPM, 2), 1);
@@ -43,6 +51,7 @@ int	drow_minimap(t_game *game, int center_x, int center_y)
 	int	map_x;
 	int	map_y;
 
+	color = 0;
 	map_x = center_x / SIZE;
 	map_y = center_y / SIZE;
 	if (center_x < 0 || center_y < 0
@@ -50,7 +59,7 @@ int	drow_minimap(t_game *game, int center_x, int center_y)
 		|| map_y < 0 || map_y >= game->map->height / SIZE
 		|| map_x < 0 || map_x >= game->map->width / SIZE
 		|| game->map->grid[map_y] == NULL
-		|| map_x >= (int)strlen(game->map->grid[map_y]))
+		|| map_x >= (int)ft_strlen(game->map->grid[map_y]))
 		color = 0x000000;
 	else if (game->map->grid[map_y][map_x] == '1')
 		color = 0x0000FF;
@@ -98,7 +107,6 @@ void	setup_player(t_game *game)
 {
 	int	i;
 	int	j;
-	int	color;
 	int	r;
 
 	r = game->map->player_size;

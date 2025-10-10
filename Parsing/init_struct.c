@@ -6,7 +6,7 @@
 /*   By: hkhairi <hkhairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:42:19 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/09/02 22:16:03 by hkhairi          ###   ########.fr       */
+/*   Updated: 2025/09/07 19:19:31 by hkhairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,9 @@ void	init_map(t_map *map)
 	map->minimap_size = 100;
 	map->prefix_palyer_x = 102;
 	map->prefix_palyer_y = 102;
-	map->scale = SCALE;
 }
 
-void	init_game(t_game *game)
+void	init_win(t_game *game)
 {
 	game->mlx_ptr = NULL;
 	game->win_ptr = NULL;
@@ -60,25 +59,16 @@ void	init_game(t_game *game)
 	game->addr = NULL;
 	game->map = NULL;
 	game->config = NULL;
-	game->img_door.addr = NULL;
-	game->img_door.img = NULL;
-	game->img_south.addr = NULL;
-	game->img_south.img = NULL;
-	game->img_north.addr = NULL;
-	game->img_north.img = NULL;
-	game->img_west.addr = NULL;
-	game->img_west.img = NULL;
-	game->img_east.addr = NULL;
-	game->img_east.img = NULL;
-	game->player_x = -1;
-	game->start_parcing_map = -1;
-	game->player_y = -1;
-	game->is_open_door = 0;
+	game->img_door = NULL;
+	game->img_south = NULL;
+	game->img_north = NULL;
+	game->img_east = NULL;
+	game->img_west = NULL;
 }
 
 void	init_player(t_player *img_player)
 {
-	img_player->images_Feeding = NULL;
+	img_player->images_feeding = NULL;
 	img_player->images_walk = NULL;
 	img_player->images_shout = NULL;
 	img_player->frame = 0;
@@ -87,21 +77,25 @@ void	init_player(t_player *img_player)
 
 int	init_struct(t_game *game)
 {
-	init_game(game);
+	init_win(game);
 	game->config = NULL;
 	game->map = NULL;
 	game->img_player = NULL;
+	game->doors = NULL;
 	game->config = malloc(sizeof(t_config));
 	if (!game->config)
+		return (ft_putendl_fd(ERROR_ALOCATION, 2), 0);
+	if (!init_config(game->config))
 		return (0);
 	game->map = malloc(sizeof(t_map));
 	if (!game->map)
-		return (free(game->config), 0);
+		return (ft_putendl_fd(ERROR_ALOCATION, 2), 0);
 	init_map(game->map);
-	init_config(game->config);
 	game->img_player = malloc(sizeof(t_player));
 	if (!game->img_player)
-		return (0);
+		return (ft_putendl_fd(ERROR_ALOCATION, 2), 0);
 	init_player(game->img_player);
+	if (!init_game(game))
+		return (0);
 	return (1);
 }

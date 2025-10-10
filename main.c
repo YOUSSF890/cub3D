@@ -3,34 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkhairi <hkhairi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylagzoul <ylagzoul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:11:48 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/09/03 11:17:48 by hkhairi          ###   ########.fr       */
+/*   Updated: 2025/10/10 14:23:57 by ylagzoul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./cub.h"
+#include "./cub.h"
 
-void check_leaks(void)
+int	ft_close_win(t_game *game)
 {
-    system("leaks cub");
+	free_game(game);
+	exit(0);
 }
 
-int main(int argc, char *argv[])
+void	free_game(t_game *game)
 {
-    atexit(check_leaks);
-    t_game *game;
+	if (game->map)
+		free_map(game->map);
+	destroy_images(game);
+	if (game->config)
+		free_config(game->config);
+	if (game->win_ptr)
+	{
+		mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+		game->win_ptr = NULL;
+	}
+	if (game->img_player)
+		free_images_player(game);
+	free_doors(game);
+	free(game);
+}
 
-    game = malloc(sizeof(t_game));
-    if (!game)
-        return (1);
-    if (!init_struct(game))
-        return (free_game(game), 1);
-    if (!start_parcing(argc, argv, game))
-        return (free_game(game), 1);
-    if (start_randering(game))
-        return (1);
-    free_game(game);
-    return (0);
+int	main(int argc, char *argv[])
+{
+	t_game	*game;
+
+	game = malloc(sizeof(t_game));
+	if (!game)
+		return (1);
+	if (!init_struct(game))
+		(free_game(game), exit(1));
+	if (!start_parcing(argc, argv, game))
+		(free_game(game), exit(1));
+	if (!fetch_door(game))
+		(free_game(game), exit(1));
+	if (start_randering(game))
+		(free_game(game), exit(1));
+	free_game(game);
+	return (0);
 }

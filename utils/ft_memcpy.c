@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkhairi <hkhairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 15:11:18 by hkhairi           #+#    #+#             */
-/*   Updated: 2025/09/06 18:00:57 by hkhairi          ###   ########.fr       */
+/*   Created: 2025/09/07 11:07:07 by hkhairi           #+#    #+#             */
+/*   Updated: 2025/09/07 11:10:30 by hkhairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
-void	ft_putendl_fd(char *s, int fd)
+void	*ft_memcpy(void *dst, const void *src, int n)
 {
-	int	i;
+	unsigned char		*ptr_dst;
+	const unsigned char	*ptr_src;
 
-	if (!s || fd == -1)
-		return ;
-	i = 0;
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-	write(fd, "\n", 1);
+	if (dst == NULL && src == NULL)
+		return (NULL);
+	if (dst == src)
+		return (dst);
+	ptr_dst = (unsigned char *)dst;
+	ptr_src = (unsigned char *)src;
+	while (n--)
+		*ptr_dst++ = *ptr_src++;
+	return (dst);
 }
